@@ -1,0 +1,60 @@
+import { Time } from "@/util/Time";
+
+export const GAMES_DATA = [
+  {
+    id: "abcd-1231",
+    name: "First Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1232",
+    name: "Second Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1233",
+    name: "Third Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1234",
+    name: "Forth Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1235",
+    name: "Fifth Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1236",
+    name: "Sixth Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+  {
+    id: "abcd-1237",
+    name: "Seventh Game",
+    startTime: Time.getCurrentDate(),
+    endTime: null,
+    active: true,
+    players: [],
+  },
+];
