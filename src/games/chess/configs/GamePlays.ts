@@ -1,4 +1,4 @@
-import { GamePlayType } from "@/types/ChessTypes";
+import { GamePlayType } from "../types/ChessTypes";
 
 export const InitialGamePlays: GamePlayType = {
   a8: "black_rook",

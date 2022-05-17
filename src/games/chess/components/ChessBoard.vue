@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts">
-import { InitialGamePlays, PotentialGamePlays } from "@/configs/GamePlays";
-import { GamePlayType } from "@/types/ChessTypes";
+import { InitialGamePlays, PotentialGamePlays } from "../configs/GamePlays";
+import { GamePlayType } from "../types/ChessTypes";
 import { Game } from "@/types/Game";
 import { PropType } from "vue";
 import { Options, Vue } from "vue-class-component";

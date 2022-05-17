@@ -9,7 +9,7 @@
 <script lang="ts">
 import { PropType } from "@vue/runtime-core";
 import { Options, Vue } from "vue-class-component";
-import { GamePlayType } from "@/types/ChessTypes";
+import { GamePlayType } from "../types/ChessTypes";
 import ChessPiece from "./ChessPiece.vue";
 
 @Options({

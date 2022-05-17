@@ -7,7 +7,8 @@
 <script lang="ts">
 import { PropType } from "vue";
 import { Options, Vue } from "vue-class-component";
-import ChessBoard from "@/games/ChessBoard.vue";
+// TODO: check dependency
+import ChessBoard from "@/games/chess/components/ChessBoard.vue";
 import { Game } from "@/types/Game";
 
 @Options({
