@@ -6,20 +6,14 @@
 </template>
 
 <script lang="ts">
-import { PropType } from "vue";
 import { Options, Vue } from "vue-class-component";
-import { Game } from "@/types/Game";
+import { gameManager } from "@/managers/GameManager";
 
 @Options({
-  props: {
-    game: {
-      type: Object as PropType<Game>,
-      required: true,
-    },
-  },
+  props: {},
 })
 export default class GameCard extends Vue {
-  game!: Game;
+  game = gameManager.game;
 }
 </script>
 

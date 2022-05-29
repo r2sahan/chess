@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { PieceImages } from "@/configs/PieceImages";
+import { PieceImages } from "../configs/PieceImages";
 import { Options, Vue } from "vue-class-component";
 
 @Options({

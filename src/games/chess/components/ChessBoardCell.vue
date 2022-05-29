@@ -1,5 +1,5 @@
 <template>
-  <div :class="`chess-board-cell ${cellClass}`">
+  <div :class="`chess-board-cell ${cellClass}`" @click="onSelect">
     <div v-if="cellY == 'a'" class="row-identifier">{{ cellX }}</div>
     <div v-if="cellX == '1'" class="column-identifier">{{ cellY }}</div>
     <ChessPiece :piece="cellPiece" />
@@ -7,9 +7,8 @@
 </template>
 
 <script lang="ts">
-import { PropType } from "@vue/runtime-core";
+import { gameManager } from "@/managers/GameManager";
 import { Options, Vue } from "vue-class-component";
-import { GamePlayType } from "../types/ChessTypes";
 import ChessPiece from "./ChessPiece.vue";
 
 @Options({
@@ -25,16 +24,12 @@ import ChessPiece from "./ChessPiece.vue";
       type: String,
       required: true,
     },
-    gamePlays: {
-      type: Object as PropType<GamePlayType>,
-      require: true,
-    },
   },
 })
 export default class ChessBoardCell extends Vue {
   cellX!: string;
   cellY!: string;
-  gamePlays!: GamePlayType;
+  game = gameManager.game;
 
   get cellType() {
     return this.cellY + this.cellX;
@@ -49,7 +44,19 @@ export default class ChessBoardCell extends Vue {
   }
 
   get cellPiece() {
-    return this.gamePlays[this.cellType];
+    return this.game.gamePlay.board[this.cellType];
+  }
+
+  onSelect(event: Event) {
+    event.preventDefault();
+    if (this.cellPiece) {
+      this.game.gamePlay.selectedCellPiece = this.cellPiece;
+      this.game.gamePlay.selectedCellType = this.cellType;
+    } else {
+      this.game.gamePlay.board[this.cellType] =
+        this.game.gamePlay.selectedCellPiece;
+      this.game.gamePlay.board[this.game.gamePlay.selectedCellType] = "";
+    }
   }
 }
 </script>
@@ -62,14 +69,14 @@ export default class ChessBoardCell extends Vue {
 }
 .row-identifier {
   position: absolute;
-  bottom: 4px;
-  left: 2px;
+  top: 4px;
+  right: 2px;
   font-weight: 500;
 }
 .column-identifier {
   position: absolute;
-  top: 2px;
-  right: 4px;
+  bottom: 2px;
+  left: 4px;
   font-weight: 500;
 }
 .black {

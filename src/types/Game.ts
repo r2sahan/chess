@@ -4,7 +4,8 @@ export interface Game {
   id: string;
   name: string;
   startTime: Date;
-  endTime: Date | null;
+  endTime?: Date;
   active: boolean;
   players: Player[];
+  gamePlay: {[key: string]: any};
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="game-header">
-      <GameCard :game="game" />
+      <GameCard />
       <button @click="leaveGame">Leave the game</button>
     </div>
     <div class="game-content">
@@ -9,10 +9,10 @@
         <PlayerCard
           :key="player.id"
           :player="player"
-          v-for="player in game.players"
+          v-for="player in players"
         />
       </div>
-      <Board :game="game" />
+      <Board />
       <div class="watchers">
         <WatcherCard
           :key="watcher.id"
@@ -36,6 +36,8 @@ import { Time } from "@/util/Time";
 import { PLAYERS_DATA } from "@/data/PlayersData";
 import { WATCHERS_DATA } from "@/data/WatchersData";
 import { RouteLocationRaw } from "vue-router";
+import { gameManager } from "@/managers/GameManager";
+import { Player } from "@/types/Player";
 
 @Options({
   components: {
@@ -50,11 +52,12 @@ import { RouteLocationRaw } from "vue-router";
       id: gameReference,
       name: "First Game",
       startTime: Time.getCurrentDate(),
-      endTime: null,
       active: true,
       players: PLAYERS_DATA.slice(0, 2),
+      gamePlay: {},
     };
-    this.game = theGame;
+    gameManager.startGame(theGame);
+    this.players = gameManager.game.players;
   },
   mounted() {
     this.watchers = WATCHERS_DATA.slice(0, 3);
@@ -68,13 +71,14 @@ import { RouteLocationRaw } from "vue-router";
       "You will lose the game. Are you sure to quit the game?"
     );
     if (result) {
-      this.game.endTime = Time.getCurrentDate();
+      gameManager.game.endTime = Time.getCurrentDate();
+      gameManager.game.gamePlay = {};
       next();
     }
   },
 })
 export default class GameView extends Vue {
-  game = undefined as unknown as Game;
+  players = [] as Player[];
   watchers = [] as Watcher[];
 
   leaveGame() {
