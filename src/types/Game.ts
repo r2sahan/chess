@@ -1,3 +1,4 @@
+import { GamePlayType } from "./GamePlayType";
 import { Player } from "./Player";
 
 export interface Game {
@@ -7,5 +8,5 @@ export interface Game {
   endTime?: Date;
   active: boolean;
   players: Player[];
-  gamePlay: {[key: string]: any};
+  gamePlay: GamePlayType;
 }

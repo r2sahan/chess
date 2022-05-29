@@ -1,5 +1,8 @@
 <template>
-  <div :class="`chess-board-cell ${cellClass}`" @click="onSelect">
+  <div
+    :class="`chess-board-cell ${cellBackground} ${cellSelected}`"
+    @click="onSelect"
+  >
     <div v-if="cellY == 'a'" class="row-identifier">{{ cellX }}</div>
     <div v-if="cellX == '1'" class="column-identifier">{{ cellY }}</div>
     <ChessPiece :piece="cellPiece" />
@@ -25,8 +28,12 @@ import ChessPiece from "./ChessPiece.vue";
       required: true,
     },
   },
+  created() {
+    this.cellBackground = this.isEven ? "black" : "white";
+  },
 })
 export default class ChessBoardCell extends Vue {
+  cellBackground = "";
   cellX!: string;
   cellY!: string;
   game = gameManager.game;
@@ -39,12 +46,15 @@ export default class ChessBoardCell extends Vue {
     return (+this.cellX + parseInt(this.cellY, 26)) % 2 == 0;
   }
 
-  get cellClass() {
-    return this.isEven ? "black" : "white";
-  }
-
   get cellPiece() {
     return this.game.gamePlay.board[this.cellType];
+  }
+
+  // TODO: more efficient with selected dom element
+  get cellSelected() {
+    return this.game.gamePlay.selectedCellType == this.cellType
+      ? "selected"
+      : "";
   }
 
   onSelect(event: Event) {
@@ -56,6 +66,8 @@ export default class ChessBoardCell extends Vue {
       this.game.gamePlay.board[this.cellType] =
         this.game.gamePlay.selectedCellPiece;
       this.game.gamePlay.board[this.game.gamePlay.selectedCellType] = "";
+      this.game.gamePlay.selectedCellPiece = "";
+      this.game.gamePlay.selectedCellType = "";
     }
   }
 }
@@ -84,5 +96,8 @@ export default class ChessBoardCell extends Vue {
 }
 .white {
   background-color: #fffeee;
+}
+.selected {
+  box-shadow: 3px 3px inset;
 }
 </style>

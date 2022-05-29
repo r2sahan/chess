@@ -30,10 +30,7 @@ import Board from "@/components/Board.vue";
 import GameCard from "@/components/GameCard.vue";
 import PlayerCard from "@/components/PlayerCard.vue";
 import WatcherCard from "@/components/WatcherCard.vue";
-import { Game } from "@/types/Game";
 import { Watcher } from "@/types/Watcher";
-import { Time } from "@/util/Time";
-import { PLAYERS_DATA } from "@/data/PlayersData";
 import { WATCHERS_DATA } from "@/data/WatchersData";
 import { RouteLocationRaw } from "vue-router";
 import { gameManager } from "@/managers/GameManager";
@@ -48,15 +45,7 @@ import { Player } from "@/types/Player";
   },
   async created() {
     const gameReference = this.$route.params.ref as string;
-    const theGame: Game = {
-      id: gameReference,
-      name: "First Game",
-      startTime: Time.getCurrentDate(),
-      active: true,
-      players: PLAYERS_DATA.slice(0, 2),
-      gamePlay: {},
-    };
-    gameManager.startGame(theGame);
+    gameManager.startGame(gameReference);
     this.players = gameManager.game.players;
   },
   mounted() {
@@ -71,8 +60,7 @@ import { Player } from "@/types/Player";
       "You will lose the game. Are you sure to quit the game?"
     );
     if (result) {
-      gameManager.game.endTime = Time.getCurrentDate();
-      gameManager.game.gamePlay = {};
+      gameManager.endGame();
       next();
     }
   },
