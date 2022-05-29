@@ -1,10 +1,11 @@
 import { PLAYERS_DATA } from "@/data/PlayersData";
 import { Game } from "@/types/Game";
+import { GamePlayeManager } from "@/types/GamePlayeManager";
 import { Time } from "@/util/Time";
 
-class GameManager {
-  private static instance: GameManager;
-  private _game!: Game;
+export class GameManager {
+  private static instance?: GameManager;
+  private game!: Game;
 
   static getInstance() {
     if (!this.instance) {
@@ -14,25 +15,29 @@ class GameManager {
   }
 
   startGame(gameReference: string) {
-    this._game = {
+    this.game = {
       id: gameReference,
       name: "First Game",
       startTime: Time.getCurrentDate(),
       active: true,
       players: PLAYERS_DATA.slice(0, 2),
-      gamePlay: {},
     };
   }
 
   endGame() {
-    this._game.endTime = Time.getCurrentDate();
-    this._game.gamePlay = {};
-    GameManager.instance = new GameManager();
+    this.game.endTime = Time.getCurrentDate();
+    this.game.gamePlayManager = undefined;
   }
 
-  get game() {
-    return this._game;
+  get currentGame() {
+    return this.game;
+  }
+
+  isFirstUser(playerId: string) {
+    return this.game.players[0].id === playerId;
+  }
+
+  setGamePlayManager(gamePlayManager: GamePlayeManager) {
+    this.game.gamePlayManager = gamePlayManager;
   }
 }
-
-export const gameManager = GameManager.getInstance();

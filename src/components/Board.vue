@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <ChessBoard :game="game" />
+    <ChessBoard />
   </div>
 </template>
 
@@ -8,7 +8,6 @@
 import { Options, Vue } from "vue-class-component";
 // TODO: check the following dependency
 import ChessBoard from "@/games/chess/components/ChessBoard.vue";
-import { gameManager } from "@/managers/GameManager";
 
 @Options({
   components: {
@@ -16,9 +15,7 @@ import { gameManager } from "@/managers/GameManager";
   },
   props: {},
 })
-export default class Board extends Vue {
-  game = gameManager.game;
-}
+export default class Board extends Vue {}
 </script>
 
 <style scoped>

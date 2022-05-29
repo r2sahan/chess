@@ -1,6 +1,6 @@
-import { BoardCellMapType } from "../types/ChessTypes";
+import { ChessBoardMap } from "../types/ChessTypes";
 
-export const InitialGamePlays: BoardCellMapType = {
+export const InitialGamePlays: ChessBoardMap = {
   a8: "black_rook",
   b8: "black_knight",
   c8: "black_bishop",
@@ -36,7 +36,7 @@ export const InitialGamePlays: BoardCellMapType = {
   h2: "white_pawn",
 };
 
-export const PotentialGamePlays: BoardCellMapType = {
+export const PotentialGamePlays: ChessBoardMap = {
   a8: "black_rook",
   b8: "black_knight",
   c8: "black_bishop",

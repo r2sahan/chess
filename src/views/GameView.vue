@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <div class="game-header">
-      <GameCard />
+      <GameCard :game="game" />
       <button @click="leaveGame">Leave the game</button>
     </div>
     <div class="game-content">
@@ -33,8 +33,9 @@ import WatcherCard from "@/components/WatcherCard.vue";
 import { Watcher } from "@/types/Watcher";
 import { WATCHERS_DATA } from "@/data/WatchersData";
 import { RouteLocationRaw } from "vue-router";
-import { gameManager } from "@/managers/GameManager";
+import { GameManager } from "@/managers/GameManager";
 import { Player } from "@/types/Player";
+import { Game } from "@/types/Game";
 
 @Options({
   components: {
@@ -45,10 +46,10 @@ import { Player } from "@/types/Player";
   },
   async created() {
     const gameReference = this.$route.params.ref as string;
+    const gameManager = GameManager.getInstance();
     gameManager.startGame(gameReference);
-    this.players = gameManager.game.players;
-  },
-  mounted() {
+    this.game = gameManager.currentGame;
+    this.players = gameManager.currentGame.players;
     this.watchers = WATCHERS_DATA.slice(0, 3);
   },
   beforeRouteLeave(
@@ -60,12 +61,13 @@ import { Player } from "@/types/Player";
       "You will lose the game. Are you sure to quit the game?"
     );
     if (result) {
-      gameManager.endGame();
+      GameManager.getInstance().endGame();
       next();
     }
   },
 })
 export default class GameView extends Vue {
+  game!: Game;
   players = [] as Player[];
   watchers = [] as Watcher[];
 

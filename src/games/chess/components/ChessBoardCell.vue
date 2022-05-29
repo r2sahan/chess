@@ -3,15 +3,16 @@
     :class="`chess-board-cell ${cellBackground} ${cellSelected}`"
     @click="onSelect"
   >
-    <div v-if="cellY == 'a'" class="row-identifier">{{ cellX }}</div>
-    <div v-if="cellX == '1'" class="column-identifier">{{ cellY }}</div>
-    <ChessPiece :piece="cellPiece" />
+    <div v-if="cellColumn == 'a'" class="row-identifier">{{ cellRow }}</div>
+    <div v-if="cellRow == '1'" class="column-identifier">{{ cellColumn }}</div>
+    <ChessPiece :piece="piece" />
   </div>
 </template>
 
 <script lang="ts">
-import { gameManager } from "@/managers/GameManager";
+import { GameManager } from "@/managers/GameManager";
 import { Options, Vue } from "vue-class-component";
+import { ChessManager } from "../managers/ChessManager";
 import ChessPiece from "./ChessPiece.vue";
 
 @Options({
@@ -19,11 +20,11 @@ import ChessPiece from "./ChessPiece.vue";
     ChessPiece,
   },
   props: {
-    cellX: {
+    cellRow: {
       type: String,
       required: true,
     },
-    cellY: {
+    cellColumn: {
       type: String,
       required: true,
     },
@@ -34,41 +35,34 @@ import ChessPiece from "./ChessPiece.vue";
 })
 export default class ChessBoardCell extends Vue {
   cellBackground = "";
-  cellX!: string;
-  cellY!: string;
-  game = gameManager.game;
+  cellRow!: string;
+  cellColumn!: string;
+  game = GameManager.getInstance().currentGame;
 
-  get cellType() {
-    return this.cellY + this.cellX;
+  get chessManager() {
+    return this.game.gamePlayManager as ChessManager;
+  }
+
+  get cell() {
+    return this.cellColumn + this.cellRow;
   }
 
   get isEven() {
-    return (+this.cellX + parseInt(this.cellY, 26)) % 2 == 0;
+    return (+this.cellRow + parseInt(this.cellColumn, 26)) % 2 == 0;
   }
 
-  get cellPiece() {
-    return this.game.gamePlay.board[this.cellType];
+  get piece() {
+    return this.chessManager.getPiece(this.cell);
   }
 
   // TODO: more efficient with selected dom element
   get cellSelected() {
-    return this.game.gamePlay.selectedCellType == this.cellType
-      ? "selected"
-      : "";
+    return this.chessManager.isSelected(this.cell) ? "selected" : "";
   }
 
   onSelect(event: Event) {
     event.preventDefault();
-    if (this.cellPiece) {
-      this.game.gamePlay.selectedCellPiece = this.cellPiece;
-      this.game.gamePlay.selectedCellType = this.cellType;
-    } else {
-      this.game.gamePlay.board[this.cellType] =
-        this.game.gamePlay.selectedCellPiece;
-      this.game.gamePlay.board[this.game.gamePlay.selectedCellType] = "";
-      this.game.gamePlay.selectedCellPiece = "";
-      this.game.gamePlay.selectedCellType = "";
-    }
+    this.chessManager.move(this.piece, this.cell);
   }
 }
 </script>

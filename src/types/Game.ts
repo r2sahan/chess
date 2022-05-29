@@ -1,4 +1,4 @@
-import { GamePlayType } from "./GamePlayType";
+import { GamePlayeManager } from "./GamePlayeManager";
 import { Player } from "./Player";
 
 export interface Game {
@@ -8,5 +8,5 @@ export interface Game {
   endTime?: Date;
   active: boolean;
   players: Player[];
-  gamePlay: GamePlayType;
+  gamePlayManager?: GamePlayeManager;
 }

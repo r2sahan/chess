@@ -1,18 +1,19 @@
 <template>
   <div class="chess-board">
-    <div class="board-row" :key="x" v-for="x in ROWS">
-      <div class="board-column" :key="y" v-for="y in COLUMNS">
-        <ChessBoardCell :cellX="x" :cellY="y" />
+    <div class="board-row" :key="row" v-for="row in ROWS">
+      <div class="board-column" :key="column" v-for="column in COLUMNS">
+        <ChessBoardCell :cellRow="row" :cellColumn="column" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { InitialGamePlays, PotentialGamePlays } from "../configs/GamePlays";
 import { Options, Vue } from "vue-class-component";
 import ChessBoardCell from "./ChessBoardCell.vue";
-import { gameManager } from "@/managers/GameManager";
+import { GameManager } from "@/managers/GameManager";
+import { ChessManager } from "../managers/ChessManager";
+import { COLUMNS, ROWS } from "../configs/GameConstants";
 
 @Options({
   components: {
@@ -20,16 +21,14 @@ import { gameManager } from "@/managers/GameManager";
   },
   props: {},
   created() {
-    this.game.gamePlay.board =
-      this.game.players[0].id === "player-1"
-        ? InitialGamePlays
-        : PotentialGamePlays;
+    const gameManager = GameManager.getInstance();
+    const isFirstUser = gameManager.isFirstUser("player-1");
+    gameManager.setGamePlayManager(new ChessManager(isFirstUser));
   },
 })
 export default class ChessBoard extends Vue {
-  ROWS = ["8", "7", "6", "5", "4", "3", "2", "1"];
-  COLUMNS = ["h", "g", "f", "e", "d", "c", "b", "a"];
-  game = gameManager.game;
+  ROWS = ROWS;
+  COLUMNS = COLUMNS;
 }
 </script>
 
