@@ -7,6 +7,7 @@ export class ChessManager implements GamePlayeManager {
   private selectedCell = "";
   private board!: ChessBoard;
   eliminatedPieces: string[] = [];
+  logs: string[] = [];
 
   constructor(isFirstUser: boolean) {
     this.board = isFirstUser
@@ -32,6 +33,8 @@ export class ChessManager implements GamePlayeManager {
   }
 
   private movePiece(cell: string) {
+    const log = `${this.selectedPiece}: ${this.selectedCell} > ${cell}`;
+    this.logs = [log, ...this.logs];
     this.board[cell] = this.selectedPiece;
     this.board[this.selectedCell] = "";
     this.selectedPiece = "";
@@ -39,13 +42,15 @@ export class ChessManager implements GamePlayeManager {
   }
 
   private eliminatePiece(piece: string) {
-    this.eliminatedPieces.push(piece);
+    const log = `${piece} eliminated`;
+    this.logs = [log, ...this.logs];
+    this.eliminatedPieces = [piece, ...this.eliminatedPieces];
   }
 
   move(piece: string, cell: string) {
     if (piece) {
-      const pieceColor = this.getPieceColor(piece);
       if (this.selectedPiece) {
+        const pieceColor = this.getPieceColor(piece);
         const selectedPieceColor = this.getPieceColor(this.selectedPiece);
         if (selectedPieceColor !== pieceColor) {
           this.movePiece(cell);
@@ -56,7 +61,9 @@ export class ChessManager implements GamePlayeManager {
       this.selectPiece(piece, cell);
       return;
     }
-    this.movePiece(cell);
+    if (this.selectedPiece) {
+      this.movePiece(cell);
+    }
   }
 
   get currentBoard() {

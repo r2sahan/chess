@@ -27,6 +27,7 @@ export default class ChessPiece extends Vue {
 
 <style scoped>
 .chess-piece {
-  padding: 15px 10px;
+  padding: 5px;
+  margin: 0;
 }
 </style>

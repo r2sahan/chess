@@ -70,8 +70,9 @@ export default class ChessBoardCell extends Vue {
 <style scoped>
 .chess-board-cell {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
+  padding: 10px;
 }
 .row-identifier {
   position: absolute;
